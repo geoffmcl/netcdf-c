@@ -3,7 +3,7 @@ T=t
 
 #ARGS=t
 
-SRC=error.c test_get.c test_put.c test_read.c test_write.c util.c
+SRC=test_put.c test_get.c test_read.c test_write.c util.c error.c
 
 #CMD=valgrind --leak-check=full
 #CMD=export NETCDF_LOG_LEVEL=5 ;gdb --args

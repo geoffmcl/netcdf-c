@@ -4569,7 +4569,7 @@ nc4_put_vars(NC *nc, int ncid, int varid, const size_t *startp,
    long long unsigned xtend_size[NC_MAX_VAR_DIMS];
    hsize_t fdims[NC_MAX_VAR_DIMS], fmaxdims[NC_MAX_VAR_DIMS];
    hsize_t start[NC_MAX_VAR_DIMS], count[NC_MAX_VAR_DIMS];
-   hsize_t stride[NC_MAX_VAR_DIMS];
+   hssize_t stride[NC_MAX_VAR_DIMS];
    char *name_to_use;
    int need_to_extend = 0;
 #ifdef USE_PARALLEL4
@@ -4757,7 +4757,7 @@ nc4_put_vars(NC *nc, int ncid, int varid, const size_t *startp,
 #endif
             if (endindex >= fdims[d2])
             {
-               xtend_size[d2] = (long long unsigned)(endindex + 1);
+               xtend_size[d2] = (long long unsigned)(endindex+1);
                need_to_extend++;
             }
             else
