@@ -4601,13 +4601,14 @@ nc4_put_vars(NC *nc, int ncid, int varid, const size_t *startp,
       return retval;
 
    /* Convert from size_t and ptrdiff_t to hssize_t, and hsize_t. */
+   /* Also do sanity checks */
    for (i = 0; i < var->ndims; i++)
    {
       start[i] = startp[i];
       count[i] = countp[i];
       stride[i] = stridep[i];
-      /* Check for zero stride */
-      if(stride[i] == 0)
+      /* Check for non-positive stride */
+      if(stride[i] <= 0)
 	return NC_ESTRIDE;
    }
 
@@ -4748,6 +4749,8 @@ nc4_put_vars(NC *nc, int ncid, int varid, const size_t *startp,
       for (d2 = 0; d2 < var->ndims; d2++)
       {
          hsize_t endindex = start[d2] + (stride[d2]*(count[d2]-1)); /* last index written */
+	 if(count[d2] == 0)
+	     endindex = start[d2];
          dim = var->dim[d2];
          assert(dim && dim->hdr.id == var->dimids[d2]);
          if (dim->unlimited)
@@ -4945,16 +4948,17 @@ nc4_get_vars(NC *nc, int ncid, int varid, const size_t *startp,
       return retval;
 
    /* Convert from size_t and ptrdiff_t to hssize_t, and hsize_t. */
+   /* Also do sanity checks */
    for (i = 0; i < var->ndims; i++)
    {
       start[i] = startp[i];
       count[i] = countp[i];
       stride[i] = stridep[i];
       /* if any of the count values are zero don't actually read. */
-      if (count[i] == 0 || stride[i] == 0)
+      if (count[i] == 0)
          no_read++;
-      /* if any of the stride values are zero fail. */
-      if (stride[i] == 0)
+      /* if any of the stride values are non-positive, fail. */
+      if (stride[i] <= 0)
          return NC_ESTRIDE;
    }
 

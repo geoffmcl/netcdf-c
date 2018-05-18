@@ -77,8 +77,13 @@ typedef struct {			/* specification for how to format dump */
                                  */
     int nc_mode;                /* mode as reported by inq_format_extended */
 
+    bool_t no_newline;	        /* if true, print embedded newlines as is;
+                                 * versus default of starting a new line */
+
     int xopt_inmemory;      /* Use in-memory option; testing only */
     int xopt_props ;      /* 1=>Unconditionally Suppress properties attribute */
+
+
 } fspec_t;
 
 #endif	/*_NCDUMP_H_ */

@@ -1,5 +1,5 @@
 # Test c output
-T=tst_compounds
+T=t
 
 #SRC=hdf5plugins/H5Zmisc.c
 

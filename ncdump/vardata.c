@@ -23,6 +23,9 @@
 
 #define LINEPIND	"    "	/* indent of continued lines */
 
+#define LBRACK "{"
+#define RBRACK "}"
+
 extern fspec_t formatting_specs; /* set from command-line options */
 
 /* Only read this many values at a time, if last dimension is larger
@@ -345,7 +348,10 @@ pr_tvals(
 	    printf("\\f");
 	    break;
 	case '\n':	/* generate linebreaks after new-lines */
-	    printf("\\n\",\n    \"");
+	    if(formatting_specs.no_newline)
+	        printf("\\n");
+	    else
+	        printf("\\n\",\n    \"");
 	    break;
 	case '\r':
 	    printf("\\r");
@@ -374,6 +380,7 @@ pr_tvals(
 	}
     }
     printf("\"");
+fflush(stdout);
     /* if (formatting_specs.full_data_cmnts) { */
     /* 	lastdelim (0, lastrow); */
     /* 	annotate (vp,  (size_t *)cor, 0L); */
@@ -442,7 +449,7 @@ print_rows(
 	inc *= vdims[i];
     }
     if(mark_record) { /* the whole point of this recursion is printing these "{}" */
-	lput("{");
+	lput(LBRACK);
 	marks_pending++;	/* matching "}"s to emit after last "row" */
     }
     if(rank - level > 1) {     	/* this level is just d0 next levels */
@@ -470,6 +477,7 @@ print_rows(
 	if(formatting_specs.brief_data_cmnts && rank > 1 && ncols > 0) {
 	    annotate_brief(vp, cor, vdims);
 	}
+fprintf(stderr,"cor= %d %d %d %d\n",cor[0],cor[1],cor[2],cor[3]); fflush(stderr);
 	NC_CHECK(nc_get_vara(ncid, varid, cor, edg, (void *)valp));
 
 	/* Test if we should treat array of chars as strings along last dimension  */
@@ -491,26 +499,41 @@ print_rows(
 	}
 	/* determine if this is the last row */
 	lastrow = true;
+#if 0
 	for(j = 0; j < rank - 1; j++) {
-      if (cor[j] != vdims[j] - 1) {
+          if (cor[j] != vdims[j] - 1) {
 		lastrow = false;
 		break;
-      }
+          }
 	}
-	if (formatting_specs.full_data_cmnts) {
-      for (j = 0; j < marks_pending; j++) {
-		sbuf_cat(sb, "}");
-      }
-      printf("%s", sbuf_str(sb));
-      lastdelim (0, lastrow);
-      annotate (vp, cor, d0-1);
-	} else {
-      for (j = 0; j < marks_pending; j++) {
-		sbuf_cat(sb, "}");
-      }
-      lput(sbuf_str(sb));
-      lastdelim2 (0, lastrow);
+#else
+      if (cor[0] < vdims[0] - 1)
+	lastrow = false;
+      else {
+	int alllast = 1;
+	for(j = 1; j < rank - 1; j++) {
+	    if (cor[j] != vdims[j]) {
+		alllast = 0;
+		break;
+	    }
 	}
+	lastrow = (alllast ? true : false);
+     }
+#endif
+      if (formatting_specs.full_data_cmnts) {
+        for (j = 0; j < marks_pending; j++) {
+		sbuf_cat(sb, RBRACK);
+        }
+        printf("%s", sbuf_str(sb));
+        lastdelim (0, lastrow);
+        annotate (vp, cor, d0-1);
+      } else {
+        for (j = 0; j < marks_pending; j++) {
+		sbuf_cat(sb, RBRACK);
+        }
+        lput(sbuf_str(sb));
+        lastdelim2 (0, lastrow);
+      }
     }
     sbuf_free(sb);
     return NC_NOERR;
