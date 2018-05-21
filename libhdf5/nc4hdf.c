@@ -5311,4 +5311,3 @@ exit:
       return NC_ERANGE;
    return NC_NOERR;
 }
-

@@ -380,7 +380,6 @@ pr_tvals(
 	}
     }
     printf("\"");
-fflush(stdout);
     /* if (formatting_specs.full_data_cmnts) { */
     /* 	lastdelim (0, lastrow); */
     /* 	annotate (vp,  (size_t *)cor, 0L); */
@@ -477,7 +476,6 @@ print_rows(
 	if(formatting_specs.brief_data_cmnts && rank > 1 && ncols > 0) {
 	    annotate_brief(vp, cor, vdims);
 	}
-fprintf(stderr,"cor= %d %d %d %d\n",cor[0],cor[1],cor[2],cor[3]); fflush(stderr);
 	NC_CHECK(nc_get_vara(ncid, varid, cor, edg, (void *)valp));
 
 	/* Test if we should treat array of chars as strings along last dimension  */
@@ -499,7 +497,7 @@ fprintf(stderr,"cor= %d %d %d %d\n",cor[0],cor[1],cor[2],cor[3]); fflush(stderr)
 	}
 	/* determine if this is the last row */
 	lastrow = true;
-#if 0
+#if 1
 	for(j = 0; j < rank - 1; j++) {
           if (cor[j] != vdims[j] - 1) {
 		lastrow = false;
