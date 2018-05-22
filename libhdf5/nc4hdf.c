@@ -4604,9 +4604,9 @@ nc4_put_vars(NC *nc, int ncid, int varid, const size_t *startp,
    /* Also do sanity checks */
    for (i = 0; i < var->ndims; i++)
    {
-      start[i] = startp[i];
-      count[i] = countp[i];
-      stride[i] = stridep[i];
+      start[i] = (startp == NULL ? 0 : startp[i]);
+      count[i] = (countp == NULL ? 1 : countp[i]);
+      stride[i] = (stridep == NULL ? 1 : stridep[i]);
       /* Check for non-positive stride */
       if(stride[i] <= 0)
 	return NC_ESTRIDE;
@@ -4951,9 +4951,9 @@ nc4_get_vars(NC *nc, int ncid, int varid, const size_t *startp,
    /* Also do sanity checks */
    for (i = 0; i < var->ndims; i++)
    {
-      start[i] = startp[i];
-      count[i] = countp[i];
-      stride[i] = stridep[i];
+      start[i] = (startp == NULL ? 0 : startp[i]);
+      count[i] = (countp == NULL ? 1 : countp[i]);
+      stride[i] = (stridep == NULL ? 1 : stridep[i]);
       /* if any of the count values are zero don't actually read. */
       if (count[i] == 0)
          no_read++;

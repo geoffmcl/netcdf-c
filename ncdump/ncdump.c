@@ -121,11 +121,10 @@ usage(void)
   [-x]             Output XML (NcML) instead of CDL\n\
   [-Xp]            Unconditionally suppress output of the properties attribute\n\
   [-Ln]            Set log level to n (>= 0); ignore if logging not enabled.\n\
-  [-N]             When printing a character chunk with embedded newlines, do not start a new line\n\
   file             Name of netCDF file (or URL if DAP access enabled)\n"
 
     (void) fprintf(stderr,
-		   "%s [-c|-h] [-v ...] [[-b|-f] [c|f]] [-l len] [-n name] [-p n[,n]] [-k] [-x] [-s] [-t|-i] [-g ...] [-w] [-Ln] [-N] file\n%s",
+		   "%s [-c|-h] [-v ...] [[-b|-f] [c|f]] [-l len] [-n name] [-p n[,n]] [-k] [-x] [-s] [-t|-i] [-g ...] [-w] [-Ln] file\n%s",
 		   progname,
 		   USAGE);
 
@@ -2147,7 +2146,7 @@ main(int argc, char *argv[])
        exit(EXIT_SUCCESS);
     }
 
-    while ((c = getopt(argc, argv, "b:cd:f:g:hikl:n:p:stv:xwKL:X:N")) != EOF)
+    while ((c = getopt(argc, argv, "b:cd:f:g:hikl:n:p:stv:xwKL:X:")) != EOF)
       switch(c) {
 	case 'h':		/* dump header only, no data */
 	  formatting_specs.header_only = true;
@@ -2257,9 +2256,6 @@ main(int argc, char *argv[])
 	  }
 #endif
 	  ncsetlogging(1);
-	  break;
-	case 'N': 
-	  formatting_specs.no_newline = true;
 	  break;
         case '?':
 	  usage();

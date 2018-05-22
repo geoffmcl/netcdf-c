@@ -23,9 +23,6 @@
 
 #define LINEPIND	"    "	/* indent of continued lines */
 
-#define LBRACK "{"
-#define RBRACK "}"
-
 extern fspec_t formatting_specs; /* set from command-line options */
 
 /* Only read this many values at a time, if last dimension is larger
@@ -348,10 +345,7 @@ pr_tvals(
 	    printf("\\f");
 	    break;
 	case '\n':	/* generate linebreaks after new-lines */
-	    if(formatting_specs.no_newline)
-	        printf("\\n");
-	    else
-	        printf("\\n\",\n    \"");
+	    printf("\\n\",\n    \"");
 	    break;
 	case '\r':
 	    printf("\\r");
@@ -448,7 +442,7 @@ print_rows(
 	inc *= vdims[i];
     }
     if(mark_record) { /* the whole point of this recursion is printing these "{}" */
-	lput(LBRACK);
+	lput("{");
 	marks_pending++;	/* matching "}"s to emit after last "row" */
     }
     if(rank - level > 1) {     	/* this level is just d0 next levels */
@@ -497,41 +491,26 @@ print_rows(
 	}
 	/* determine if this is the last row */
 	lastrow = true;
-#if 1
 	for(j = 0; j < rank - 1; j++) {
-          if (cor[j] != vdims[j] - 1) {
+      if (cor[j] != vdims[j] - 1) {
 		lastrow = false;
 		break;
-          }
-	}
-#else
-      if (cor[0] < vdims[0] - 1)
-	lastrow = false;
-      else {
-	int alllast = 1;
-	for(j = 1; j < rank - 1; j++) {
-	    if (cor[j] != vdims[j]) {
-		alllast = 0;
-		break;
-	    }
-	}
-	lastrow = (alllast ? true : false);
-     }
-#endif
-      if (formatting_specs.full_data_cmnts) {
-        for (j = 0; j < marks_pending; j++) {
-		sbuf_cat(sb, RBRACK);
-        }
-        printf("%s", sbuf_str(sb));
-        lastdelim (0, lastrow);
-        annotate (vp, cor, d0-1);
-      } else {
-        for (j = 0; j < marks_pending; j++) {
-		sbuf_cat(sb, RBRACK);
-        }
-        lput(sbuf_str(sb));
-        lastdelim2 (0, lastrow);
       }
+	}
+	if (formatting_specs.full_data_cmnts) {
+      for (j = 0; j < marks_pending; j++) {
+		sbuf_cat(sb, "}");
+      }
+      printf("%s", sbuf_str(sb));
+      lastdelim (0, lastrow);
+      annotate (vp, cor, d0-1);
+	} else {
+      for (j = 0; j < marks_pending; j++) {
+		sbuf_cat(sb, "}");
+      }
+      lput(sbuf_str(sb));
+      lastdelim2 (0, lastrow);
+	}
     }
     sbuf_free(sb);
     return NC_NOERR;

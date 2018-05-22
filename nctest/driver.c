@@ -29,10 +29,6 @@ determine_test_formats(int *num_formats, int *format)
    int ind = 0;
    int num;
 
-   *num_formats = 1;
-   format[0] = NC_FORMAT_NETCDF4_CLASSIC;   
-   return;
-
    /* We always have classic and 64-bit offset */
    num = 2;
    format[ind++] = NC_FORMAT_CLASSIC;

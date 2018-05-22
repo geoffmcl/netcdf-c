@@ -30,7 +30,7 @@ t_type cdm_sea_soundings tst_camrun tst_vl tst_atts1 tst_atts2		\
 tst_vars2 tst_files5 tst_files6 tst_sync tst_h_scalar tst_rename	\
 tst_rename2 tst_h5_endians tst_atts_string_rewrite			\
 tst_hdf5_file_compat tst_fill_attr_vanish tst_rehash tst_filterparser	\
-tst_bug324 tst_types tst_atts3 tst_put_vars tst_elatefill
+tst_bug324 tst_types tst_atts3 tst_put_vars tst_elatefill tst_varsperf
 
 # Temporary I hope
 if !ISCYGWIN
@@ -123,8 +123,6 @@ if ENABLE_METADATA_PERF
 check_PROGRAMS += bigmeta openbigmeta
 TESTS += perftest.sh
 endif
-
-TESTS += tst_varsperf
 
 EXTRA_DIST = run_par_test.sh run_bm.sh run_bm_test1.sh			\
 run_bm_test2.sh run_bm_radar_2D.sh run_bm_radar_2D_compression1.sh	\
