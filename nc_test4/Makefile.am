@@ -150,7 +150,7 @@ tst_interops2.h4 tst_h5_endians.nc tst_h4_lendian.h4 test.nc            \
 tst_atts_string_rewrite.nc tst_empty_vlen_unlim.nc                      \
 tst_empty_vlen_lim.nc tst_parallel4_simplerw_coll.nc                    \
 tst_fill_attr_vanish.nc tst_rehash.nc testszip.nc test.h5               \
-szip_dump.cdl perftest.txt bigmeta.nc
+szip_dump.cdl perftest.txt bigmeta.nc bigvars.nc
 
 DISTCLEANFILES = findplugin.sh
 
