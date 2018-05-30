@@ -676,7 +676,7 @@ out:
 *
 *-------------------------------------------------------------------------
 */
-int
+hid_t
 NC4_image_init(NC_HDF5_FILE_INFO_T* h5)
 {
     hid_t		fapl = -1, file_id = -1; /* HDF5 identifiers */
