@@ -30,7 +30,7 @@ TARGET_LINK_LIBRARIES(nc_test
   )
 
 # Some extra stand-alone tests
-SET(TESTS t_nc tst_small tst_misc tst_norm tst_names tst_nofill tst_nofill2 tst_nofill3 tst_meta tst_inq_type tst_utf8_validate tst_utf8_phrases tst_global_fillval tst_max_var_dims tst_formats tst_def_var_fill tst_err_enddef tst_open_mem)
+SET(TESTS t_nc tst_small tst_misc tst_norm tst_names tst_nofill tst_nofill2 tst_nofill3 tst_meta tst_inq_type tst_utf8_validate tst_utf8_phrases tst_global_fillval tst_max_var_dims tst_formats tst_def_var_fill tst_err_enddef)
 
 IF(NOT HAVE_BASH)
   SET(TESTS ${TESTS} tst_atts3)
@@ -52,7 +52,7 @@ IF(LARGE_FILE_TESTS)
 
 ENDIF()
 
-SET(TESTFILES ${TESTFILES} tst_diskless tst_diskless3 tst_diskless4 tst_diskless5 tst_inmemory)
+SET(TESTFILES ${TESTFILES} tst_diskless tst_diskless3 tst_diskless4 tst_diskless5 tst_inmemory tst_open_mem)
 IF(USE_NETCDF4)
   SET(TESTFILES ${TESTFILES} tst_diskless2)
 ENDIF()
