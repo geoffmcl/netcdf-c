@@ -24,8 +24,11 @@ TARGET_LINK_LIBRARIES(nccopy netcdf ${ALL_TLL_LIBS})
 # test scripts to work.
 ####
 IF(MSVC)
+  # separate the Debug and Release EXE name - append 'd', or '_D' used by HDF5
+  set_target_properties(ncdump PROPERTIES DEBUG_POSTFIX d )
   SET_TARGET_PROPERTIES(ncdump PROPERTIES RUNTIME_OUTPUT_DIRECTORY
     ${CMAKE_CURRENT_BINARY_DIR})
+  # then these are maybe not required - different name[d].EXE already applied
   SET_TARGET_PROPERTIES(ncdump PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG
     ${CMAKE_CURRENT_BINARY_DIR})
   SET_TARGET_PROPERTIES(ncdump PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE
@@ -37,6 +40,7 @@ IF(MSVC)
     ${CMAKE_CURRENT_BINARY_DIR})
   SET_TARGET_PROPERTIES(nccopy PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE
     ${CMAKE_CURRENT_BINARY_DIR})
+    
 ENDIF()
 
 
